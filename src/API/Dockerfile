@@ -7,13 +7,13 @@ EXPOSE 5001
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["API/API.csproj", "API/"]
-COPY ["Application/Application.csproj", "Application/"]
-COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
-COPY ["Core/Core.csproj", "Core/"]
-RUN dotnet restore "API/API.csproj"
+COPY ["src/API/API.csproj", "src/API/"]
+COPY ["src/Application/Application.csproj", "src/Application/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
+COPY ["src/Core/Core.csproj", "src/Core/"]
+RUN dotnet restore "src/API/API.csproj"
 COPY . .
-WORKDIR "/src/API"
+WORKDIR "/src/src/API"
 RUN dotnet build "API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
