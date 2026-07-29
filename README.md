@@ -1,13 +1,13 @@
-# C# DDD Boilerplate
+# C# Base Architecture
 
-Este projeto é um **boilerplate para APIs em .NET**, estruturado com base nos princípios do **Domain-Driven Design (DDD)**. Seu objetivo é acelerar o desenvolvimento de novos projetos, promover boas práticas e servir como referência técnica.
+Este projeto é uma base para APIs em .NET, estruturado com arquitetura de camadas. Seu objetivo é acelerar o desenvolvimento de novos projetos, promover boas práticas e servir como referência técnica.
 
 [![Docker](https://img.shields.io/badge/Docker-Container-blue?logo=docker)](https://www.docker.com/)
 [![.NET](https://img.shields.io/badge/.NET-9.0-blue?logo=dotnet)](https://dotnet.microsoft.com/)
 [![SQL Server](https://img.shields.io/badge/Database-SQL_Server-4479A1?logo=microsoft-sql-server)](https://www.microsoft.com/sql-server)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## 📖 Sumário
+## Sumário
+
 - [Por que usar este Boilerplate?](#-por-que-usar-este-boilerplate)
 - [Funcionalidades Inclusas](#-funcionalidades-inclusas)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
@@ -16,145 +16,127 @@ Este projeto é um **boilerplate para APIs em .NET**, estruturado com base nos p
 - [Customização do Banco de Dados](#-customização-do-banco-de-dados)
 - [Próximos Passos](#-próximos-passos)
 - [Feedback](#-feedback)
-- [Autor](#%E2%80%8D-autor)
 
 ## 🎯 Por que usar este Boilerplate?
 
--   **Acelere o Desenvolvimento:** Comece novos projetos com uma estrutura robusta e pré-configurada, economizando horas de setup inicial.
--   **Foco nas Regras de Negócio:** Com a estrutura pronta, você pode se concentrar nas regras de negócio da sua aplicação.
--   **Fácil de Manter:** A arquitetura facilita a manutenção e escalabilidade, sem aumentar consideravelmente a complexidade da solução.
+- **Acelere o desenvolvimento:** comece com uma estrutura robusta e pré-configurada, economizando tempo de setup.
+- **Foco nas regras de negócio:** concentre-se nas regras da aplicação em vez da infraestrutura repetitiva.
+- **Fácil de manter:** a separação em camadas facilita manutenção e evolução sem aumentar desnecessariamente a complexidade.
 
 ## 📌 Funcionalidades Inclusas
-- 🗑️ **Soft Delete**: Registros nunca são realmente excluídos do banco. Eles são apenas marcados com um timestamp `DeletedAt`.
-- 🕒 **Timestamps Automáticos**: Todas as entidades herdam `CreatedAt` e `UpdatedAt`, que são gerenciados automaticamente.
-- 📦 **Repositório Genérico**: Abstração de métodos CRUD com suporte simplificado a filtros, includes, projeções e paginação.
-- 🔗 **Padrão Unit of Work**: Garante que as transações sejam executadas de forma conjunta, mantendo a consistência dos dados.
-- 🛡️ **Validação de requisições:** Regras de validação para DTOs de entrada usando FluentValidation.
-- ✉️ **Padronização de Respostas**: Respostas da API seguem um padrão, facilitando o consumo no frontend.
-- 🔐 **Autenticação JWT**: Estrutura de autenticação e autorização via JWT pré-configurada.
+
+- **Soft delete:** registros são marcados com `DeletedAt` em vez de removidos definitivamente.
+- **Timestamps automáticos:** entidades compartilham `CreatedAt` e `UpdatedAt`, gerenciados automaticamente.
+- **Repositório genérico:** abstração CRUD com suporte a filtros, includes e paginação.
+- **Unit of Work:** coordena as operações de persistência.
+- **Validação de requisições:** regras de DTOs de entrada com FluentValidation.
+- **Respostas padronizadas:** a API retorna modelos consistentes para facilitar o consumo no frontend.
+- **Autenticação JWT:** autenticação e autorização por bearer token já configuradas.
+- **Swagger:** documentação interativa dos endpoints em ambiente de desenvolvimento.
 
 ## 📁 Estrutura do Projeto
 
-Este projeto segue uma arquitetura em camadas inspirada no Domain-Driven Design (DDD), garantindo uma clara separação de responsabilidades.
+O projeto segue uma arquitetura em camadas inspirada em DDD, com separação clara de responsabilidades.
 
 ```text
-├── src/
-│   ├── API/
-│   │   ├── Controllers/
-│   │   ├── Extensions/
-│   │   └── SeedWork/
-│   │       └── Filters/
-│   │
-│   ├── Application/
-│   │   ├── Services/
-│   │   └── SeedWork/
-│   │       └── Responses/
-│   │
-│   ├── Infrastructure/
-│   │   ├── Contexts/
-│   │   ├── Extensions/
-│   │   ├── Migrations/
-│   │   ├── Options/
-│   │   ├── Repositories/
-│   │   └── SeedWork/
-│   │       └── UnitOfWork/
-│   │
-│   ├── Core/
-│   │   ├── SeedWork/
-│   │   └── Enums/
-│
-├── tests/
-│   ├── IntegrationTests/
-│   └── UnitTests/
-│
-└── docker-compose.yml
+src/
+  API/             # Controllers, filtros, configuração e inicialização da API
+  Application/     # Casos de uso, validação, mapeamentos e respostas
+  Core/            # Entidades, enums e regras centrais do domínio
+  Infrastructure/  # EF Core, repositórios, migrations e opções
+tests/
+  IntegrationTests/# Testes de API e infraestrutura de testes
+  UnitTests/       # Testes unitários
+docker-compose.yml # API e SQL Server em containers
 ```
 
 ## 🚀 Começando
 
-Siga os passos abaixo para configurar e executar o projeto em seu ambiente.
-
 ### Pré-requisitos
 
--   [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download)
--   [Docker](https://www.docker.com/) (Para execução com contêineres)
--   Um SGBD como [SQL Server](https://www.microsoft.com/sql-server/sql-server-2022) (Para execução local)
+- [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download)
+- [Docker](https://www.docker.com/) para executar com containers
+- SQL Server para execução local sem Docker
 
-### 1. Clone o Repositório
+### Clone e configuração local
 
 ```bash
 git clone https://github.com/LucasSimionatoIsTaken/csharp-ddd-boilerplate.git
 cd csharp-ddd-boilerplate
 ```
 
-### 2. Configuração (Apenas para execução local)
-
-Se você não for usar o Docker, precisará configurar a string de conexão no arquivo `src/API/appsettings.json`. Altere a string `Default` para apontar para o seu banco de dados.
+Para execução local, atualize a connection string `Default` em `src/API/appsettings.json` para apontar para sua instância do SQL Server:
 
 ```json
 "ConnectionStrings": {
   "Default": "Data Source=SEU_SERVIDOR;Initial Catalog=NOME_DO_BANCO;TrustServerCertificate=true;Integrated Security=true;"
-},
+}
 ```
 
-### 3. Execute o Projeto
+### Execute o projeto
 
--   **Com Docker (Recomendado):**
-    O Docker Compose irá criar e configurar os contêineres para a API e para o banco de dados.
+Com Docker, o Compose cria a API e o SQL Server:
 
-    ```bash
-    docker-compose up -d
-    ```
+```bash
+docker compose up --build
+```
 
--   **Localmente:**
-    Execute o comando na raiz do projeto. As migrations serão aplicadas na inicialização.
+Localmente, restaure as dependências e inicie a API. As migrations pendentes são aplicadas na inicialização:
 
-    ```bash
-    dotnet run --project src/API/API.csproj
-    ```
+```bash
+dotnet restore BackBase.sln
+dotnet run --project src/API/API.csproj
+```
 
 ## 📚 Como Usar
 
-Após iniciar a aplicação, a API estará disponível localmente.
+Em ambiente de desenvolvimento, a documentação Swagger fica disponível na raiz da aplicação. Com Docker, acesse `http://localhost:5000/`; pela configuração local, acesse `https://localhost:5000/`.
 
-1.  **Acesse a Documentação da API (Swagger)**:
-    Abra seu navegador e acesse `http://localhost:5000/swagger`. Lá você encontrará todos os endpoints documentados e poderá testá-los diretamente.
+Endpoints de exemplo:
 
-2.  **Exemplo de fluxo**:
-    * Use o endpoint `POST /api/auth/register` para criar um novo usuário.
-    * Use `POST /api/auth/login` para autenticar e obter um token JWT.
-    * Use o token obtido no cabeçalho `Authorization: Bearer <token>` para acessar endpoints protegidos.
+- `POST /api/auth`: Faz login.
+- `GET /api/users`: Listagem paginada dos usuários, requer JWT.
+- `POST /api/users`: Cria um usuário.
+- `PUT /api/users/{id}`: Atualiza um usuário.
+- `DELETE /api/users/{id}`: Deleta um usuário (o registro não é apagado).
+
+## Testes
+
+Execute todos os testes com:
+
+```bash
+dotnet test BackBase.sln
+```
+
+Os testes de integração usam a configuração própria em `tests/IntegrationTests` e não exigem uma instância local do SQL Server.
 
 ## 🔧 Customização do Banco de Dados
 
-Caso deseje migrar para outro SGBD (ex: MySQL, PostgreSQL):
+Para usar outro SGBD, instale o provider do Entity Framework Core desejado, remova o provider do SQL Server e atualize o método `AddDbContext` em `src/API/Extensions/IServiceCollectionExtension.cs`. Por exemplo, para MySQL:
 
-1.  Instale o provider do Entity Framework para o banco desejado e remova o do SQL Server. Exemplo para MySQL:
-    ```bash
-    dotnet add package Pomelo.EntityFrameworkCore.MySql --project Infrastructure
-    dotnet remove package Microsoft.EntityFrameworkCore.SqlServer --project Infrastructure
-    ```
-2.  Em `src/API/Extensions/IServiceCollectionExtensions.cs`, na função `AddDbContext`, substitua `UseSqlServer` pelo método de extensão correspondente ao seu novo provider (ex: `UseMySql`).
+```bash
+dotnet add src/Infrastructure/Infrastructure.csproj package Pomelo.EntityFrameworkCore.MySql
+dotnet remove src/Infrastructure/Infrastructure.csproj package Microsoft.EntityFrameworkCore.SqlServer
+```
+
+Em seguida, substitua `UseSqlServer` pelo método correspondente do novo provider, como `UseMySql`.
+
+Por último, remova a pasta `src/Infrastructure/Migrations` com as migrações anteriores (se houver) e adicione novamente com o comando
+
+```bash
+dotnet ef migrations add MigrationName --project src/Infrastructure --startup-project src/API
+```
 
 ## 📚 Próximos Passos
--   [x] 🧾 Melhorar a cobertura da documentação da API (Swagger)
--   [x] 🔽 Melhorar a paginação com ordenação
--   [x] 🧩 Configurar adapters para serviços externos
--   [x] 🧪 Adicionar testes de integração
--   [ ] 🔐 Adicionar features de segurança (refresh token, forgot password)
--   [ ] 🗄️ Adicionar seed de dados para o banco
--   [ ] 📧 Adicionar serviço de envio de e-mail
--   [ ] 📄 Adicionar serviço de upload de arquivos
--   [ ] 🧪 Adicionar testes unitários
+
+- [x] Melhorar a documentação da API com Swagger
+- [x] Melhorar a paginação com ordenação
+- [x] Adicionar testes de integração
+- [ ] Adicionar refresh token e recuperação de senha
+- [ ] Adicionar seed de dados
+- [ ] Adicionar serviço de e-mail e upload de arquivos
+- [ ] Expandir os testes unitários
 
 ## 📝 Feedback
 
 Este é um projeto pessoal, mas feedbacks são bem-vindos. Se você encontrar um bug ou tiver uma sugestão, sinta-se à vontade para abrir uma [Issue](https://github.com/LucasSimionatoIsTaken/csharp-ddd-boilerplate/issues).
-
-## 🧑‍💻 Autor
-
-Desenvolvido por Lucas Simionato — [@LucasSimionatoIsTaken](https://github.com/LucasSimionatoIsTaken)  
-
-
-Este projeto é open-source e você pode usá-lo livremente como base para seus próprios projetos.
-
